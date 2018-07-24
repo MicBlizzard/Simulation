@@ -1,0 +1,51 @@
+from math import *
+
+def takeoff():
+    
+
+    C_L = 2.6
+    C_D0 = 0.0121
+    piAe = 61.021818
+    rho = 1.225 # density at sea level (kg/m^3)
+    S = 845.417664 # area (m^2)
+    g = 9.80665 #gravity at sea level (m/s^2)
+    m = 0.45359237*1234600 #aircraft mass(kg)
+    T = 362530.0627024484 # total thrust (N)
+    V_to = 63.867654176124404 #take-off velocity
+    mu = 0.030
+
+
+
+
+    h=0
+    dt=0.001
+    t=0
+    V=0
+    x=0
+    while h==0 :
+        #Equation
+        W = m*g
+        L = (1/2)*C_L*rho*S*V**2 # Lift (N)
+        
+        C_D = C_D0 + C_L/(piAe) # Drag coefficient
+        
+        D_aero = (1/2)*C_D*rho*S*V**2 # Aerodynamic drag
+        
+        N = W-L # Normal coefficient
+        
+        D_f = mu*N # Friction drag with ground
+        
+        D = D_aero + D_f # Total drag
+        net_F = T-D
+        a=net_F/(m)
+
+        t+=dt
+        V=V+a*dt
+        x+=V*dt
+
+        Va=round(V_to,2)
+        Vb=round(V,2)
+        
+        if Vb==Va:
+            return t,V,x
+            h=1
